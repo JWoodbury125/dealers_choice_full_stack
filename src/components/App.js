@@ -20,9 +20,12 @@ class App extends React.Component {
 
   render() {
     return (
-      <ul>
-        <Members members={this.state.members} />
-      </ul>
+      <div>
+        <h1>Dealers Choice Full Stack</h1>
+        <ul>
+          <Members members={this.state.members} />
+        </ul>
+      </div>
     );
   }
 }
