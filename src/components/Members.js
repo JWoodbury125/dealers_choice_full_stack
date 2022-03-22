@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import {
-  fetchMembers,
-  addMember,
-  deleteMember,
-  fetchMemberDetail,
-} from "../store";
+import { fetchMembers, addMember, deleteMember } from "../store";
 import { Link } from "react-router-dom";
 
 class Members extends React.Component {
