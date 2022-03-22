@@ -4,9 +4,11 @@ import { fetchMembers, addMember, deleteMember } from "../store";
 import { Link } from "react-router-dom";
 
 class Members extends React.Component {
-  constructor() {
-    super();
-    this.state = {};
+  constructor(props) {
+    super(props);
+    this.state = {
+      members: this.props.members ? this.props.members : "",
+    };
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
   }
