@@ -3,6 +3,8 @@
     "express": "^4.17.3",
     "faker": "^5.1.0",
     "pg": "^8.7.3",
+    "r": "^0.0.5",
+    "redux-devtools-extension": "^2.13.9",
     "sequelize": "^6.17.0"
   },
   "devDependencies": {

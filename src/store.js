@@ -1,56 +1,55 @@
 import { createStore, applyMiddleware } from "redux";
 import loggerMiddleware from "redux-logger";
+import thunk from "redux-thunk";
+import { composeWithDevTools } from "redux-devtools-extension";
+import logger from "redux-logger";
+import axios from "axios";
 
-const initialState = {
-  loading: false,
-  members: [],
-  error: "",
-};
+const LOAD_MEMBERS = "LOAD_MEMBERS";
+const ADD_MEMBER = "ADD_MEMBER";
+const GET_MEMBER = "GET_MEMBER";
 
-// const ADD_MEMBER = 'ADD_MEMBER'
-// const REMOVE_MEMBER = 'REMOVE_MEMBER'
-// const UPDATE_MEMBER = 'UPDATE_MEMBER'
-
-const FETCH_MEMBER_REQUEST = "FETCH_MEMBER_REQUEST";
-const FETCH_MEMBER_SUCCESS = "FETCH_MEMBER_SUCCESS";
-const FETCH_MEMBER_FAILURE = "FETCH_MEMEBER_FAILURE";
-
-export const fetchMembersRequest = () => {
-  return {
-    type: FETCH_MEMBER_REQUEST,
-  };
-};
-
-// let newId = 0;
-// export const addMember = person => ({
-//     type: ADD_MEMBER,
-//     id: newId ++
-// })
-
-const reducer = (state = initialState, action) => {
+const memberReducer = (state = [], action) => {
   switch (action.type) {
-    case FETCH_MEMBER_REQUEST:
+    case LOAD_MEMBERS: {
+      return action.members;
+    }
+    case ADD_MEMBER: {
       return {
         ...state,
-        loading: true,
+        name: action.name,
       };
-    case FETCH_MEMBER_SUCCESS:
-      return {
-        loading: false,
-        payload: action.payload,
-        error: "",
-      };
-    case FETCH_MEMBER_FAILURE:
-      return {
-        loading: false,
-        members: [],
-        error: action.payload,
-      };
+    }
+    case GET_MEMBER: {
+      return action.member;
+    }
     default:
       return state;
   }
 };
+export const addMember = () => {
+  return async (dispatch) => {
+    const response = await axios.post("/members");
+    store.dispatch({ type: ADD_MEMBER, name: response.data });
+  };
+};
+export const fetchMemberDetail = (memberId) => {
+  return async (dispatch) => {
+    const response = await axios.get(`/members/${memberId}`);
+    dispatch({ member: response.data, type: GET_MEMBER });
+  };
+};
 
-const store = createStore(reducer, applyMiddlewWare(loggerMiddleware));
+export const fetchMembers = () => {
+  return async (dispatch) => {
+    const response = await axios.get("/members");
+    dispatch({ members: response.data, type: LOAD_MEMBERS });
+  };
+};
+
+const store = createStore(
+  memberReducer,
+  composeWithDevTools(applyMiddleware(logger, thunk))
+);
 
 export default store;

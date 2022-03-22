@@ -24,6 +24,25 @@ app.get("/members/:memberId", async (req, res, next) => {
   }
 });
 
+app.post("/members", async (req, res, next) => {
+  try {
+    const { name } = req.body;
+    res.status(201).send(await Member.create({ name }));
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.delete("/members/:memberId", async (req, res, next) => {
+  try {
+    const member = await Member.findByPk(req.params.memberId);
+    await member.destroy();
+    res.sendStatus(204);
+  } catch (err) {
+    next(err);
+  }
+});
+
 const init = async () => {
   try {
     await db.sync({ force: true });
