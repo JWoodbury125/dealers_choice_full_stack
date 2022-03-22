@@ -26,7 +26,7 @@ app.get("/members/:memberId", async (req, res, next) => {
 
 app.post("/members", async (req, res, next) => {
   try {
-    const { name } = req.body;
+    const name = req.body;
     res.status(201).send(await Member.create({ name }));
   } catch (err) {
     next(err);

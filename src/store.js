@@ -8,6 +8,7 @@ import axios from "axios";
 const LOAD_MEMBERS = "LOAD_MEMBERS";
 const ADD_MEMBER = "ADD_MEMBER";
 const GET_MEMBER = "GET_MEMBER";
+const DELETE_MEMBER = "DELETE_MEMBER";
 
 const memberReducer = (state = [], action) => {
   switch (action.type) {
@@ -22,6 +23,9 @@ const memberReducer = (state = [], action) => {
     }
     case GET_MEMBER: {
       return action.member;
+    }
+    case DELETE_MEMBER: {
+      return action.member.filter((member) => member.id !== action.member.id);
     }
     default:
       return state;
@@ -44,6 +48,14 @@ export const fetchMembers = () => {
   return async (dispatch) => {
     const response = await axios.get("/members");
     dispatch({ members: response.data, type: LOAD_MEMBERS });
+  };
+};
+
+export const deleteMember = (member) => {
+  return async (dispatch) => {
+    const response = await axios.delete(`/members/${member.id}`);
+    response.destroy;
+    dispatch({ type: DELETE_MEMBER, member });
   };
 };
 

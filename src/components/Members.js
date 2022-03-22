@@ -1,34 +1,56 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { fetchMembers, addMember, fetchMemberDetail } from "../store";
-import Member from "./Member";
+import {
+  fetchMembers,
+  addMember,
+  deleteMember,
+  fetchMemberDetail,
+} from "../store";
 import { Link } from "react-router-dom";
 
-const Members = (props) => {
-  const members = props.members;
-  return (
-    <div>
-      <h2>Dealers Choice Full Stack</h2>
-      {members.map((member) => {
-        return (
-          <div key={member.id}>
-            <Link to={`/members/${member.id}`}>{member.name}</Link>
-            <button onClick={() => console.log("Button responds")}>x</button>
-          </div>
-        );
-      })}
-      <form onSubmit={() => console.log("Button Responds on Submit")}>
-        <input
-          type="text"
-          value={members.name}
-          onChange={(ev) => addMember(value)}
-          placeholder="name"
-        />
-        <button>Create Member</button>
-      </form>
-    </div>
-  );
-};
+class Members extends React.Component {
+  constructor() {
+    super();
+    this.state = {};
+    this.onSubmit = this.onSubmit.bind(this);
+    this.onChange = this.onChange.bind(this);
+  }
+  onSubmit = async (event) => {
+    event.preventDefault();
+
+    addMember(this.state.name);
+  };
+
+  onChange = (event) => {
+    this.setState({ name: event.target.value });
+  };
+
+  render() {
+    const members = this.props.members;
+    return (
+      <div>
+        <h2>Dealers Choice Full Stack</h2>
+        {members.map((member) => {
+          return (
+            <div key={member.id}>
+              <Link to={`/members/${member.id}`}>{member.name}</Link>
+              <button onClick={() => deleteMember(member)}>x</button>
+            </div>
+          );
+        })}
+        <form onSubmit={this.onSubmit}>
+          <input
+            type="text"
+            value={this.state.name}
+            onChange={this.onChange}
+            placeholder="name"
+          />
+          <button>Create Member</button>
+        </form>
+      </div>
+    );
+  }
+}
 
 const mapStateToProps = (state) => {
   return {
@@ -40,6 +62,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     addMember: (name) => {
       dispatch(addMember(name));
+    },
+    deleteMember: (name) => {
+      dispatch(deleteMember(name));
     },
   };
 };
