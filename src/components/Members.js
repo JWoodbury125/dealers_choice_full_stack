@@ -4,7 +4,7 @@ import { fetchMembers, addMember, deleteMember } from "../store";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-const MemberDetail = connect((state) => state)((props) => {
+export const MemberDetail = connect((state) => state)((props) => {
   const memberDet = props.members.find(
     (member) => member.id === props.match.params.id * 1
   );
@@ -47,7 +47,7 @@ class Members extends React.Component {
         {members.map((member) => {
           return (
             <div key={member.id}>
-              <Link to={`#/members/${member.id}`}>{member.name}</Link>
+              <Link to={`/members/{member.id}`}>{member.name}</Link>
               <button onClick={() => this.props.deleteMember(member)}>x</button>
             </div>
           );

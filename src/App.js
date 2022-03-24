@@ -1,5 +1,6 @@
 import React from "react";
 import Members from "./components/Members";
+import MemberDetail from "./components/Members";
 import store, { fetchMembers } from "./store";
 import { Provider, connect } from "react-redux";
 import axios from "axios";
@@ -18,6 +19,7 @@ class App extends React.Component {
       <HashRouter>
         <Switch>
           <Route path="/" component={Members} />
+          <Route path="/members/:memberId" component={MemberDetail} />
         </Switch>
       </HashRouter>
     );
