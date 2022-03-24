@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const path = require("path");
 
+app.use(express.json());
 app.use("/dist", express.static(path.join(__dirname, "dist")));
 
 app.get("/", (req, res) => res.sendFile(path.join(__dirname, "index.html")));
@@ -26,7 +27,7 @@ app.get("/members/:memberId", async (req, res, next) => {
 
 app.post("/members", async (req, res, next) => {
   try {
-    const name = req.body;
+    const name = req.body.name;
     res.status(201).send(await Member.create({ name }));
   } catch (err) {
     next(err);
